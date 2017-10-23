@@ -17,6 +17,14 @@
  * under the License.
  */
  
- package org.apache.sysml.api.ml;
- 
+package org.apache.sysml.api.ml;
+
+public class GridSearchClassifierCV extends Estimator[GridSearchClassifierCVModel] {
+	
+	
+	
+	
+	
+	
+}
  
