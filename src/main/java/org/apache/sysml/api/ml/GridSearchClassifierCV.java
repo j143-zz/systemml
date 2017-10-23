@@ -21,10 +21,15 @@ package org.apache.sysml.api.ml;
 
 public class GridSearchClassifierCV extends Estimator[GridSearchClassifierCVModel] {
 	
+	@abstract
+	public fit () {
+		
+	}
 	
-	
-	
-	
+	@abstract
+	public transform () {
+		
+	}
 	
 }
  
