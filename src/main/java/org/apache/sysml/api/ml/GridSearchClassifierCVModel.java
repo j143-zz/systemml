@@ -17,6 +17,20 @@
  * under the License.
  */
  
- package org.apache.sysml.api.ml;
+package org.apache.sysml.api.ml;
  
- 
+public class GridSearchClassifierCVModel 
+	extends Model[GridSearchClassifierCVModel]
+	with BaseSystemMLClassifierModel] {
+	
+	@abstract
+	public fit() {
+	
+	}
+	
+	@abstract
+	public transform() {
+	
+	}
+	
+}
