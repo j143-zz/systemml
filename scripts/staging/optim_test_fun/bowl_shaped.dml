@@ -1,0 +1,84 @@
+#-------------------------------------------------------------
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+#-------------------------------------------------------------
+
+
+# 1. Implements Sphere Function 
+# ------------------------------------------------------------
+# Reference: https://www.sfu.ca/~ssurjano/spheref.html
+#
+# Description: The Sphere function has d local minima except for the global one. It is continuous, convex 
+# and unimodal. 
+#
+# Input Domain:
+# The function is usually evaluated on the hypercube xi ∈ [-5.12, 5.12], for all i = 1, 2,..., d.
+#
+# Global Minimum:
+# f(X') = 0, at X' = (0, ..., 0)
+#
+# -------------------------------------------------------------
+# 
+
+sphere_fun = function (matrix [double] X) 
+  return (double y) {
+  
+  /*
+   *
+   * INPUT:
+   * X -> input matrix of size 1 x d (1 by d-dimensions)
+   *
+   * OUTPUT:
+   * y -> value of the function, a scalar
+   *
+   */
+      
+   y = sum(X ^ 2);
+   
+}
+
+# Modified Sphere function
+# -------------------------------------------------
+# Picheny et al. (2012) suggests a slightly different version of the Sphere function, with
+# d = 6, on [0, 1]^6. 
+#
+# This function has a mean of zero and a variance of one.
+# --------------------------------------------------
+#
+
+sphere_fun_modified = function (matrix [double] X)
+  return (double y) {
+  
+  /*
+   * INPUT:
+   * X -> input matrix of size 1 x 6 (1 by 6 dimensions) # we are not sure whether 
+   *      it is applicable for more than 6 dimensions, needs testing.
+   * 
+   * OUTPUT:
+   * y -> value of function, a scalar
+   *
+   
+   i = [1, 2, 3, 4, 5, 6];
+   
+   twos = matrix(2, rows = 1, cols = 6);
+   
+   sum1 = sum ( (X ^ 2) * (twos ^ i));
+   
+   y = (sum1 - 1745) / 899;
+}
