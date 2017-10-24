@@ -125,7 +125,7 @@ crossit = function (double x1, double x2)
   /*
    * INPUTS:
    * x1 -> input value in 1st dimension
-   * x2 -> inputs value in 2nd dimension
+   * x2 -> input value in 2nd dimension
    *
    * OUTPUT:
    * out -> function value, a scalar
@@ -202,7 +202,7 @@ Eggholder = function (double x1, double x2)
   /*
    * INPUTS:
    * x1 -> input value in 1st dimension
-   * x2 -> inputs value in 2nd dimension
+   * x2 -> input value in 2nd dimension
    *
    * OUTPUT:
    * out -> function value, a scalar
@@ -213,4 +213,36 @@ Eggholder = function (double x1, double x2)
    
    out = - temp1 - temp2;
   
+}
+
+# 5. Implements Gramacy & Lee (2012) Function 
+# ------------------------------------------------------------
+# Reference: https://www.sfu.ca/~ssurjano/grlee12.html
+#
+# Description: This is a simple one-dimesional test function.
+#
+# Dimensions: 1.
+#
+# Input Domain:
+# The function is usually evaluated on x ∈ [0.5, 2.5].
+#
+# Global Minimum:
+# No information available.
+#
+# -------------------------------------------------------------
+# 
+
+grlee12 = function (double x) 
+  return (double out) {
+  
+  /*
+   * INPUT: 
+   * x -> input value
+   * 
+   * OUTPUT:
+   * out -> function value
+   */
+   
+   out = (x -1) ^ 4 + sin(10 * pi * x) / (2 * x);
+   
 }
