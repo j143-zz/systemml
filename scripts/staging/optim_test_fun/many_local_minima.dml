@@ -246,3 +246,45 @@ grlee12 = function (double x)
    out = (x -1) ^ 4 + sin(10 * pi * x) / (2 * x);
    
 }
+
+
+# 6. Implements Griewank Function 
+# ------------------------------------------------------------
+# Reference: https://www.sfu.ca/~ssurjano/griewank.html
+#
+# Description: The Griewank function has many widespread local minima, which are reqularly distributed. 
+#  
+#
+# Input Domain:
+# The function is usually evaluated on the hypercube xi ∈ [-600, 600], for all i = 1, 2,..., d
+# 
+#
+# Global Minimum:
+# f(X') = 0, at X' = (0, ..., 0)
+#
+# -------------------------------------------------------------
+#
+
+Griewank = function (matrix [double] X) 
+  returns (double out) {
+  
+  /*
+   * INPUTS:
+   * X -> Input matrix of size 1 x d (1 by d-dimensions)
+   *
+   * OUTPUTS:
+   * y -> output scalar value
+   */
+   
+   d = length(X);
+   
+   temp1 = sum(X ^ 2) / 4000;
+   
+   for(i in 1:d) {
+     temp2 *= cos(X[,i] / sqrt(i));   # TODO: vectorize this loop
+   }
+   
+   y = temp1 - temp2 + 1;
+   
+}
+
