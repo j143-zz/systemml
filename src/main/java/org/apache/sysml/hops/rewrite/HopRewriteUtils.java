@@ -893,6 +893,12 @@ public class HopRewriteUtils
 		return ret;
 	}
 	
+	public static boolean isBinaryMatrixScalar(Hop hop, OpOp2 type, double val) {
+		return isBinary(hop, type)
+			&& (isLiteralOfValue(hop.getInput().get(0), val)
+			|| isLiteralOfValue(hop.getInput().get(1), val));
+	}
+	
 	public static boolean containsInput(Hop current, Hop probe) {
 		return rContainsInput(current, probe, new HashSet<Long>());	
 	}
@@ -992,6 +998,19 @@ public class HopRewriteUtils
 			|| hop.getDim1() == hop.getInput().get(0).getDim1())
 			&& isLiteralOfValue(hop.getInput().get(3), 1)
 			&& hop.getInput().get(4) instanceof LiteralOp;
+	}
+	
+	public static boolean isUnnecessaryRightIndexing(Hop hop) {
+		if( !(hop instanceof IndexingOp) )
+			return false;
+		//note: in addition to equal sizes, we also check a valid
+		//starting row and column ranges of 1 in order to guard against
+		//invalid modifications in the presence of invalid index ranges
+		//(e.g., X[,2] on a column vector needs to throw an error)
+		return isEqualSize(hop, hop.getInput().get(0))
+			&& !(hop.getDim1()==1 && hop.getDim2()==1)
+			&& isLiteralOfValue(hop.getInput().get(1), 1)  //rl
+			&& isLiteralOfValue(hop.getInput().get(3), 1); //cl
 	}
 	
 	public static boolean isScalarMatrixBinaryMult( Hop hop ) {
