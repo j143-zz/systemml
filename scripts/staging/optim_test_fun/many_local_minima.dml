@@ -39,7 +39,7 @@
 # -------------------------------------------------------------
 # 
 
-ackley = function (matrix [double] X, double a, double b, double c) 
+Ackley = function (matrix [double] X, double a, double b, double c) 
   returns (double y) {
   
   /*
@@ -66,3 +66,36 @@ ackley = function (matrix [double] X, double a, double b, double c)
 }
 
 
+# 2. Implements Buckin N. 6 Function 
+# ------------------------------------------------------------
+# Reference: https://www.sfu.ca/~ssurjano/bukin6.html
+#
+# Description: The sixth Buckin function has many local minima, all of which lie in a ridge. 
+# 
+# Dimensions: 2.
+#
+# Input Domain:
+# The function is usually evaluated on the rectangle  x1 ∈ [-15, -5], x2 ∈ [-3, 3].
+#
+# Global Minimum:
+# f(X') = 0, at X' = (-10, 1)
+#
+# -------------------------------------------------------------
+# 
+
+Buckin_N6 = function (double x1, double x2)
+  return (double out) {
+  
+  /*
+   * INPUTS: 
+   * x1 -> value along first dimension
+   * x2 -> value along second dimension
+   * 
+   * OUTPUTS:
+   * out -> function value
+   *
+   */
+  
+  out = 100 * sqrt( abs(x2 - 0.01 * x1 ^ 2) ) + 0.01 abs(x1 + 10);
+  
+}
