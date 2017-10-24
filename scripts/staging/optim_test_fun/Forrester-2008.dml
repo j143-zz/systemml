@@ -1,0 +1,74 @@
+#-------------------------------------------------------------
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+#-------------------------------------------------------------
+
+
+# 1. Implements Forrester et al. (2008) function
+# ------------------------------------------------------------
+# Reference: https://www.sfu.ca/~ssurjano/forretal08.html
+#
+# Description: This function is a simple one-dimensional test function. It is multimodal, with one global
+# minimum, one local minimum, and a zero-gradient inflection point.
+#
+# Dimensions: 1
+#
+# Input Domain:
+# The function is evaluated on x ∈ [0, 1].
+#
+# Global Minimum or Maximum:
+# No information is available.
+#
+# -------------------------------------------------------------
+# 
+
+Forrester_2008 = function (double x) 
+  return (double out) {
+  
+  /*
+   * INPUT:
+   * x -> input value, one dimension (only).
+   *
+   * OUTPUT:
+   * out -> function value, a scalar.
+   */
+   
+   out = sin(12 * x - 4) * (6 * x - 2) ^ 2 ;
+ 
+}
+
+Forrester_2008_low_fid = function (double x)
+  return (double out) {
+  
+  /*
+   * INPUTS:
+   * x -> input value one dimension (only).
+   * A -> 0.5
+   * B -> 10.0
+   * C -> -5.0
+   *
+   * OUTPUTS:
+   * out -> function value, a scalar.
+   */
+   
+   original = sin(12 * x - 4) * (6 * x - 2) ^ 2 ;
+   
+   out = A * original + B * (x - 0.5) - C;
+  
+}
