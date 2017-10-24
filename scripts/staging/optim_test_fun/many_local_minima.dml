@@ -99,3 +99,43 @@ Buckin_N6 = function (double x1, double x2)
   out = 100 * sqrt( abs(x2 - 0.01 * x1 ^ 2) ) + 0.01 abs(x1 + 10);
   
 }
+
+
+# 3. Implements Cross-In-Tray Function 
+# ------------------------------------------------------------
+# Reference: https://www.sfu.ca/~ssurjano/crossit.html
+#
+# Description: The Cross-in-Tray function has multiple global minima. 
+# 
+# Dimensions: 2.
+#
+# Input Domain:
+# The function is usually evaluated on the square xi ∈ [-10, 10], for all i = 1, 2.
+#
+# Global Minima:
+# f(X') = -2.06261, at X' = (1.3491, -1.3491), (1.3491, 1.3491), (-1.3491, 1.3491) 
+# and (-1.3491, -1.3491)
+#
+# -------------------------------------------------------------
+# 
+
+crossit = function (double x1, double x2) 
+  return (double out) {
+  
+  /*
+   * INPUTS:
+   * x1 -> input value in 1st dimension
+   * x2 -> inputs value in 2nd dimension
+   *
+   * OUTPUT:
+   * out -> function value, a scalar
+   */
+   
+   pi = 3.14 # please place here the exact value.
+   
+   temp1 = sin(x1) * sin(x2);
+   temp2 = exp( abs(100 - sqrt(x1^2 + x2^2) / pi) );
+   
+   out = -0.0001 * ( abs(temp1 * temp2) + 1 ) ^ 0.1;
+   
+}
