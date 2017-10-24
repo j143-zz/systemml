@@ -153,7 +153,7 @@ crossit = function (double x1, double x2)
 # Input Domain:
 # The function is usually evaluated on the square xi ∈ [-5.12, 5.12], for all i = 1, 2.
 #
-# Global Minima:
+# Global Minimum:
 # f(X') = -1, at X' = (0, 0)
 #
 # -------------------------------------------------------------
@@ -176,4 +176,41 @@ drop_wave = function (double x1, double x2)
    
    out = - temp1 / temp2;
    
+}
+
+# 4. Implements Egg-Holder Function 
+# ------------------------------------------------------------
+# Reference: https://www.sfu.ca/~ssurjano/egg.html
+#
+# Description: The Eggholder function is a difficult function to optimize, because of the large  
+# local minima.
+#
+# Dimensions: 2.
+#
+# Input Domain:
+# The function is usually evaluated on the square xi ∈ [-5.12, 5.12], for all i = 1, 2.
+#
+# Global Minimum:
+# f(X') = -959.6407, at X' = (512, 404.2319)
+#
+# -------------------------------------------------------------
+# 
+
+Eggholder = function (double x1, double x2)
+  return (double out) {
+  
+  /*
+   * INPUTS:
+   * x1 -> input value in 1st dimension
+   * x2 -> inputs value in 2nd dimension
+   *
+   * OUTPUT:
+   * out -> function value, a scalar
+   */
+   
+   temp1 = (x2 + 47) * sin( sqrt( abs( x2 + 47 + x1/2 ) ) )
+   temp2 = x1 * sin( sqrt( abs(x1 - (x2 + 47)) ) )
+   
+   out = - temp1 - temp2;
+  
 }
