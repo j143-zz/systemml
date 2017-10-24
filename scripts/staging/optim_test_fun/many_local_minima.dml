@@ -139,3 +139,41 @@ crossit = function (double x1, double x2)
    out = -0.0001 * ( abs(temp1 * temp2) + 1 ) ^ 0.1;
    
 }
+
+
+# 4. Implements Drop-Wave Function 
+# ------------------------------------------------------------
+# Reference: https://www.sfu.ca/~ssurjano/drop.html
+#
+# Description: The Drop-Wave function is multimodal and highly complex. 
+# 
+#
+# Dimensions: 2.
+#
+# Input Domain:
+# The function is usually evaluated on the square xi ∈ [-5.12, 5.12], for all i = 1, 2.
+#
+# Global Minima:
+# f(X') = -1, at X' = (0, 0)
+#
+# -------------------------------------------------------------
+# 
+
+drop_wave = function (double x1, double x2)
+  return (double out) {
+  
+  /*
+   * INPUTS:
+   * x1 -> input value in 1st dimension
+   * x2 -> inputs value in 2nd dimension
+   *
+   * OUTPUT:
+   * out -> function value, a scalar
+   */
+   
+   temp1 = 1 + cos(12 * sqrt(x1 ^2 + x2 ^2));
+   temp2 = 0.5 * (x1 ^2 + x2 ^2) + 2;
+   
+   out = - temp1 / temp2;
+   
+}
