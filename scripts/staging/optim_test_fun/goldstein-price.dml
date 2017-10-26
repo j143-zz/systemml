@@ -1,0 +1,98 @@
+#-------------------------------------------------------------
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+#-------------------------------------------------------------
+
+# 1. Implements Goldstein-Price Function
+# ------------------------------------------------------------
+# Reference: https://www.sfu.ca/~ssurjano/goldpr.html
+#
+# Description: The Goldstein-Price function has several local minima.  
+# 
+# Dimensions: 2
+#
+# Input Domain:
+# The function is usually evaluated on the square xi ∈ [-2, 2], for all i = 1, 2.
+#
+# Global Minimum:
+# f(X') = 3, at X' = (0, -1).
+#
+# -------------------------------------------------------------
+# 
+
+goldpr = function (matrix[double] X)
+  return (double out) {
+  
+  /*
+   * INPUT:
+   * X -> input matrix 1 x 2 (only 2-dimensions)
+   *
+   * OUTPUT:
+   * out -> function value, a scalar
+   */ 
+  
+  x1 = X[, 1];
+  x2 = X[, 2];
+  
+  out = [1  + (19 - 14*x1 +  3*x1 ^2 - 14*x2 +  6*x1*x2 +  3*x2 ^2) * (x1 + x2 + 1)^2] *
+        [30 + (18 - 32*x1 + 12*x1 ^2 - 48*x2 + 36*x1*x2 + 27*x2 ^2) * (2*x1 - 3*x2)^2] ; 
+  
+}
+
+
+# 1. Implements Goldstein-Price, Scaled Function
+# ------------------------------------------------------------
+# Reference: https://www.sfu.ca/~ssurjano/goldpr.html
+#
+# Description: The Goldstein-Price function has several local minima. This rescaled 
+# version has a mean of zero and a variance of one. 
+#
+# Dimensions: 2
+#
+# Input Domain:
+# The function is usually evaluated on the square xi ∈ [-2, 2], for all i = 1, 2.
+#
+# Global Minimum:
+# f(X') = 3, at X' = (0, -1).
+#
+# -------------------------------------------------------------
+# 
+
+goldpr_scaled = function (matrix [double] X) 
+  return (double out) {
+  
+  /*
+   * INPUT:
+   * X -> input matrix 1 x 2 (only 2-dimensions)
+   *
+   * OUTPUT:
+   * out -> function value, a scalar
+   */
+  
+  x1 = X[, 1]; x1 = 4*x1 - 2;
+  x2 = X[, 2]; x2 = 4*x2 - 2;
+  
+  out = ( 1/2.427 ) *
+        [ log(
+              [1  + (19 - 14*x1 +  3*x1 ^2 - 14*x2 +  6*x1*x2 +  3*x2 ^2) * (x1 + x2 + 1)^2] *
+              [30 + (18 - 32*x1 + 12*x1 ^2 + 48*x2 - 36*x1*x2 + 27*x2 ^2) * (2*x1 - 3*x2)^2] 
+          - 8.693
+        ];
+        
+}
