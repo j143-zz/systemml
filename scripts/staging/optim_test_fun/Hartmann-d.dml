@@ -1,0 +1,73 @@
+#-------------------------------------------------------------
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+#-------------------------------------------------------------
+
+# 1. Implements Hartmann 3-dimensional Function
+# ------------------------------------------------------------
+# Reference: https://www.sfu.ca/~ssurjano/hart3.html
+#
+# Description: The 3-dimensional Hartmann function has 4 local minima. 
+# 
+# Dimensions: 3
+#
+# Input Domain:
+# The function is usually evaluated on the hypercube xi ∈ [0, 1], for all i = 1, 2, 3.
+#
+# Global Minimum:
+# f(X') = -3.86278, at X' = (0.114614, 0.555649, 0.852547).
+#
+# -------------------------------------------------------------
+# 
+
+Hartmann_3 = function( matrix[double] X) 
+  return (double out) {
+  
+  /*
+   * INPUT:
+   * X -> input matrix 1 x 3 (3 dimensions)
+   * x1, x2, x3 -> input values for 3 dimensions
+   *
+   * OUTPUT:
+   * out -> function value, a scalar
+   */
+  
+  A = [ 3.0, 10, 30,
+        0.1, 10, 35,
+        3.0, 10, 30,
+        0.1, 10, 35 ];
+        
+  P = [ 0.3689, 0.1170, 0.2673, 
+        0.4699, 0.4387, 0.7470,
+        0.1091, 0.8732, 0.5547,
+        0.0381, 0.5743, 0.8828 ];
+        
+  alpha = t( [1.0, 1.2, 3.0, 3.2] );
+  
+  # out goes here..
+  
+}
+
+
+
+
+
+
+
+
