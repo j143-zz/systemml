@@ -62,7 +62,7 @@ backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, ma
     */
     
     dX  = dout * ( W + 0.5 * rowSums( (2*(X != 0) %*% V^2) - (2*(X != 0) %*% V^2) ) ) # shape (n, d)
-    dw0 = colSums( dout * 1 / as.matrix(1,) ) # shape (1, 1)
+    dw0 = colSums( dout * 1 / as.matrix(1,1, ) ) # shape (1, 1)
     dW  = colSums( dout * (1 / (X != 0)) ) # shape (d, 1)
     dV  = colSums( dout ) * 1 / ( rowSums(X != 0) %*% rowSums((X != 0) %*% V) - rowSums((X != 0)^2 %*% V) )  # shape (d, k)
 }
@@ -82,7 +82,7 @@ init = function(int d, int k)
     *  - V : factorized interaction terms, of shape (d, k). 
     */
     
-    w0 = matrix(0, rows=1,);
+    w0 = matrix(0, rows=1,)
     W  = matrix(0, rows=d, cols=1)
     V  = rand(rows=d, cols=k, min=0.0, max=1.0)
 }
