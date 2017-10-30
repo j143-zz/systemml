@@ -30,6 +30,7 @@ print("Starting grad checks.")
 print("---")
 
 # Loss & loss-related functions
+/*
 grad_check::cross_entropy_loss()
 grad_check::cross_entropy_loss2d()
 grad_check::l1_loss()
@@ -38,8 +39,11 @@ grad_check::l2_loss()
 grad_check::l2_reg()
 grad_check::log_loss()
 print("")
+*/
+grad_check::l1_loss()
 
 # Core layers
+/*
 grad_check::affine()
 grad_check::batch_norm1d()
 grad_check::batch_norm2d()
@@ -62,6 +66,9 @@ grad_check::sigmoid()
 grad_check::softmax()
 grad_check::softmax2d()
 grad_check::tanh()
+print("")
+*/
+grad_check::fm()
 print("")
 
 # Example model
@@ -87,6 +94,7 @@ print("")
 print("Starting other tests.")
 print("---")
 
+/*
 test::batch_norm1d()
 test::batch_norm2d()
 test::conv2d()
@@ -107,6 +115,7 @@ test::top_k2d()
 test::softmax2d()
 test::compare_tanh_builtin_forward_with_old()
 test::compare_tanh_builtin_backward_with_old()
+*/
 
 print("---")
 print("Other tests complete -- look for any ERRORs or WARNINGs.")
