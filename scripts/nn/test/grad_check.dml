@@ -1087,7 +1087,7 @@ fm = function() {
       dW_num = (lossph-lossmh) / (2*h) # numerical derivative
       
       # Check error
-      rel_error = test_util::check_rel_grad_error(as.scalar(dW[i,j], dW_num, lossph, lossmh)
+      rel_error = test_util::check_rel_grad_error(as.scalar(dW[i,j]), dW_num, lossph, lossmh)
     }
   }
   
@@ -1106,7 +1106,7 @@ fm = function() {
       dV_num = (lossph-lossmh) / (2*h) # numerical derivative
       
       # Check error
-      rel_error = test_util::check_rel_grad_error(as.scalar(dV[i,j], dV_num, lossph, lossmh)
+      rel_error = test_util::check_rel_grad_error(as.scalar(dV[i,j]), dV_num, lossph, lossmh)
     }
   }
 
