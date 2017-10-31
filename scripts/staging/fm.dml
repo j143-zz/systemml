@@ -41,7 +41,7 @@ forward = function(matrix[double] X, matrix[double] w0, matrix[double] W, matrix
    *  - out : target vector, of shape (n, 1)
    */
    
-   out = w0 + (X != 0) %*% W + 0.5 * rowSums( ((X != 0) %*% V)^2 - ((X != 0)^2 %*% V^2) )
+   out = w0 + X %*% W + 0.5 * rowSums( (X %*% V)^2 - (X^2 %*% V^2) );
 }
    
 backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, matrix[double] W, matrix[double] V)
@@ -61,10 +61,24 @@ backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, ma
     *  - dV : the gradient of loss function w.r.t  V, of shape (d, k).
     */
     
-    dX  = dout * ( W + 0.5 * rowSums( (2*(X != 0) %*% V^2) - (2*(X != 0) %*% V^2) ) ) # shape (n, d)
-    dw0 = colSums( dout * 1 / as.matrix(1) ) # shape (1, 1)
-    dW  = colSums( dout * (1 / (X != 0)) ) # shape (d, 1)
-    dV  = colSums( dout ) * 1 / ( rowSums(X != 0) %*% rowSums((X != 0) %*% V) - rowSums((X != 0)^2 %*% V) )  # shape (d, k)
+    # gradient of y (model) w.r.t. X (input)
+    dX  = ( W + 0.5 * rowSums( (2*X %*% V^2) - (2*X %*% V^2) ) ); # shape (n, d)
+ 
+    # gradient w.r.t. w0
+    g_w0 = as.matrix(1);  # shape (1, 1)
+ 
+    dw0  = dout * 1 / g_w0 ;  # shape has to be (n, 1)
+    
+    # gradient w.r.t. W
+    g_W = X ; # shape (n, d) 
+    
+    dW  = dout * (1 / g_W) ; # shape has to be (d, 1)
+    
+    # gradient w.r.t. V
+    g_V = t(X) %*% (V %*% X) - (V %*% X^2) ; # shape (d, k) - (n, k) :\
+    
+    dV  = dout  * 1 / ( g_V )  # shape has to be (d, k)
+    
 }
 
 init = function(int d, int k)
