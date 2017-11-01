@@ -60,7 +60,6 @@ backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, ma
     *  - dW : the gradient of loss function w.r.t  W, of shape (d, 1). 
     *  - dV : the gradient of loss function w.r.t  V, of shape (d, k).
     */
-    dout = rand(rows = n, cols =1, min = 0, max = 1, pdf ="uniform", sparsity = 0.2); # only for testing.
     
     # gradient of y (model) w.r.t. X (input)
     dX  = ( W + 0.5 * rowSums( (2*X %*% V^2) - (2*X %*% V^2) ) ); # shape (n, d)
@@ -82,7 +81,7 @@ backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, ma
     
 }
 
-init = function(int d, int k)
+init = function(int n, int d, int k)
     return (matrix[double] w0, matrix[double] W, matrix[double] V) {
    /* 
     * This function initializes the parameters.
