@@ -45,7 +45,7 @@ forward = function(matrix[double] X, matrix[double] w0, matrix[double] W, matrix
 }
    
 backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, matrix[double] W, matrix[double] V)
-    return (/*matrix[double] dX,*/ matrix[double] dw0, matrix[double] dW, matrix[double] dV) {
+    return (matrix[double] dX, matrix[double] dw0, matrix[double] dW, matrix[double] dV) {
    /*
     * This function accepts the upstream gradients w.r.t output target vector, and 
     * returns the gradients of the loss w.r.t the parameters
@@ -62,7 +62,7 @@ backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, ma
     */
     
     # gradient of y (model) w.r.t. X (input)
-    # dX  = ( W + 0.5 * rowSums( (2*X %*% V^2) - (2*X %*% V^2) ) ); # shape (n, d)
+    dX  = ( W + 0.5 * rowSums( (2*X %*% V^2) - (2*X %*% V^2) ) ); # shape (n, d)
  
     # gradient w.r.t. w0
     g_w0 = as.matrix(1);  # shape (1, 1)
@@ -75,9 +75,9 @@ backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, ma
     dW  =  (1 / t(g_W)) %*% dout; # shape has to be (d, 1)
     
     # gradient w.r.t. V
-    g_V = t(X) %*% rowSums(X %*% V) # - (V %*% X^2) ; # shape (d, 1) - (n, k) :\
+    g_V = t(X) %*% rowSums(X %*% V) # - (V %*% X^2) ; # shape (d, 1) - (n, k) :\ not correct!
     
-    dV  = (1 / g_V) %*% t(dout)  ;  # shape has to be (d, k)
+    dV  = (1 / g_V) %*% t(dout)  ;  # shape has to be (d, k), but is (d, 1)
     
 }
 
