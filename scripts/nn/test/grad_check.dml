@@ -1062,7 +1062,7 @@ fm = function() {
       outmh = fm::forward(X, w0, W, V)
       lossmh = l2_loss::forward(outmh, y)
       X[i,j] = old + h
-      outph = fm::forward(X)
+      outph = fm::forward(X, w0, W, V)
       lossph = l2_loss::forward(outph, y)
       X[i,j] = old # reset
       dX_num = (lossph-lossmh) / (2*h) # numerical derivative
@@ -1081,7 +1081,7 @@ fm = function() {
       outmh = fm::forward(X, w0, W, V)
       lossmh = l2_loss::forward(outmh, y)
       W[i,j] = old + h  # h = 1e-5
-      outph = fm::forward(X)
+      outph = fm::forward(X, w0, W, V)
       lossph = l2_loss::forward(outph, y)
       W[i,j] = old  # reset
       dW_num = (lossph-lossmh) / (2*h) # numerical derivative
