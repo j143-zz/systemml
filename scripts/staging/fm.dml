@@ -75,7 +75,7 @@ backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, ma
     dW  =  g_W %% dout; # shape has to be (d, 1)
     
     # gradient w.r.t. V
-    g_V = t(X) %*% (V %*% X) # - (V %*% X^2) ; # shape (d, k) - (n, k) :\
+    g_V = t(X) %*% (X %*% V) # - (V %*% X^2) ; # shape (d, k) - (n, k) :\
     
     dV  = dout  %% g_V;  # shape has to be (d, k)
     
