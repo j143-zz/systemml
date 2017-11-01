@@ -1090,7 +1090,7 @@ fm = function() {
       rel_error = test_util::check_rel_grad_error(as.scalar(dW[i,j]), dW_num, lossph, lossmh)
     }
   }
-  /*
+  
   print(" - Grad checking V.")
   for (i in 1:nrow(V)) {
     for(i in 1:ncol(V)) {
@@ -1109,7 +1109,7 @@ fm = function() {
       rel_error = test_util::check_rel_grad_error(as.scalar(dV[i,j]), dV_num, lossph, lossmh)
     }
   }
-*/
+
 }
 
 l1_loss = function() {
