@@ -45,7 +45,7 @@ forward = function(matrix[double] X, matrix[double] w0, matrix[double] W, matrix
 }
    
 backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, matrix[double] W, matrix[double] V)
-    return (/*matrix[double] dX,*/ matrix[double] dw0, matrix[double] dW, matrix[double] dV) {
+    return (/*matrix[double] dX,*/ matrix[double] dw0, matrix[double] dW/*, matrix[double] dV*/) {
    /*
     * This function accepts the upstream gradients w.r.t output target vector, and 
     * returns the gradients of the loss w.r.t the parameters
@@ -83,10 +83,10 @@ backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, ma
     dW  =  t(g_W) %*% dout; # shape (d, 1)
     
     # 4. gradient of target vector w.r.t. V
-    g_V = t(X) %*% (X %*% V) # - (X^2 %*% V) ; # shape (d, k) - (n, k) :\ not correct!
+    # g_V = t(X) %*% (X %*% V) # - (X^2 %*% V) ; # shape (d, k) - (n, k) :\ not correct!
     
     ## gradient of loss function w.r.t. V
-    dV  = g_V %*% t(dout) ;  # shape has to be (d, k)
+    # dV  = g_V %*% t(dout) ;  # shape has to be (d, k)
     
 }
 
