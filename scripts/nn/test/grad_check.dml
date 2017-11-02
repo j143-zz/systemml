@@ -1049,10 +1049,10 @@ fm = function() {
   # Compute analytical gradients of loss wrt parameters
   out = fm::forward(X, w0, W, V)
   dout = l2_loss::backward(out, y)
-  [dX, dw0, dW, dV] = fm::backward(dout, X, w0, W, V)
+  [/*dX,*/ dw0, dW, dV] = fm::backward(dout, X, w0, W, V)
 
   # Grad check
-  h = 1e-5
+  h = 1e-5/*
   print(" - Grad checking X.")
   for (i in 1:nrow(X)) {
     for( j in 1:ncol(X)) {
@@ -1071,7 +1071,7 @@ fm = function() {
       rel_error = test_util::check_rel_grad_error(as.scalar(dX[i,j]), dX_num, lossph, lossmh)
     }
   } 
-
+*/
   print(" - Grad checking W.")
   for (i in 1:nrow(W)) {
     for (j in 1:ncol(W)) {
