@@ -56,29 +56,37 @@ backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, ma
     *
     * Outputs:
     *  - dX : the gradient of loss function w.r.t  X, of shape (n, d).
-    *  - dw0: the gradient of loss function w.r.t w0, of shape (1,).
+    *  - dw0: the gradient of loss function w.r.t w0, of shape (1,). <- taking this as (n, 1)
     *  - dW : the gradient of loss function w.r.t  W, of shape (d, 1). <- make sure about this dim!
     *  - dV : the gradient of loss function w.r.t  V, of shape (d, k).
     */
     
-    # gradient of y (model) w.r.t. X (input)
-    # dX  = ( W + 0.5 * rowSums( (2*X %*% V^2) - (2*X %*% V^2) ) ); # shape (n, d)
-    dX    = ( W + 0.5 * rowsums( (2*X %*% V) %*% V - (2*X %*% V^2) ) ); # needs to be modified 
- 
-    # gradient w.r.t. w0
-    g_w0 = as.matrix(1);  # shape (1, 1)
- 
-    dw0  = dout %*% (1 / g_w0) ;  # shape has to be (n, 1)
+    # precompute (X %*% V)
+    # XV   = X %*% V ; # of shape (n,d) x (d, k) = (n, k)
     
-    # gradient w.r.t. W
+    # 1. gradient of y (model) w.r.t. X (input)
+    #g_X   = ( W + rowsums( (X %*% V) %*% V - (X %*% V^2) ) ); # needs to be modified, should the notation be dy 
+    
+    # gradient of loss function w.r.t. X
+    # dX = dout %*% g_X ; # of shape (n, d)
+ 
+    # 2. gradient of target vector w.r.t. w0
+    g_w0 = as.matrix(1);  # shape (1, 1)
+    
+    ## gradient of loss function w.r.t. w0
+    dw0  = dout %*% g_w0 ;  # shape (n, 1)
+    
+    # 2. gradient target vector w.r.t. W
     g_W = X ; # shape (n, d) 
     
-    dW  =  (1 / t(g_W)) %*% dout; # shape has to be (d, 1)
+    ## gradient of loss function w.r.t. W
+    dW  =  t(g_W) %*% dout; # shape (d, 1)
     
-    # gradient w.r.t. V
-    g_V = t(X) %*% rowSums(X %*% V) # - (V %*% X^2) ; # shape (d, 1) - (n, k) :\ not correct!
+    # 4. gradient of target vector w.r.t. V
+    g_V = t(X) %*% (X %*% V) # - (X^2 %*% V) ; # shape (d, k) - (n, k) :\ not correct!
     
-    dV  = (1 / g_V) %*% t(dout)  ;  # shape has to be (d, k), but is (d, 1)
+    ## gradient of loss function w.r.t. V
+    dV  = g_V %*% t(dout) ;  # shape has to be (d, k)
     
 }
 
