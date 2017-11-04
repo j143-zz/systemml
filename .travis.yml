@@ -1,0 +1,11 @@
+language: java
+
+before_script:
+# Download spark
+# - mkdir vendors
+# - wget http://d3kbcqa49mib13.cloudfront.net/spark-1.3.0-bin-hadoop2.4.tgz
+# - tar zxfC spark-1.3.0-bin-hadoop2.4.tgz vendors
+
+script: 
+- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+- mvn test -B
