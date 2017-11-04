@@ -20,7 +20,6 @@
 package org.apache.sysml.runtime.controlprogram.context;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -48,8 +47,7 @@ import org.apache.sysml.runtime.instructions.cp.ScalarObjectFactory;
 import org.apache.sysml.runtime.instructions.gpu.context.GPUContext;
 import org.apache.sysml.runtime.instructions.gpu.context.GPUObject;
 import org.apache.sysml.runtime.matrix.MatrixCharacteristics;
-import org.apache.sysml.runtime.matrix.MatrixDimensionsMetaData;
-import org.apache.sysml.runtime.matrix.MatrixFormatMetaData;
+import org.apache.sysml.runtime.matrix.MetaDataFormat;
 import org.apache.sysml.runtime.matrix.MetaData;
 import org.apache.sysml.runtime.matrix.data.FrameBlock;
 import org.apache.sysml.runtime.matrix.data.MatrixBlock;
@@ -152,6 +150,11 @@ public class ExecutionContext {
 		return _variables.get(name);
 	}
 	
+	public Data getVariable(CPOperand operand) throws DMLRuntimeException {
+		return operand.getDataType().isScalar() ?
+			getScalarInput(operand) : getVariable(operand.getName());
+	}
+	
 	public void setVariable(String name, Data val) {
 		_variables.put(name, val);
 	}
@@ -233,8 +236,7 @@ public class ExecutionContext {
 	public MatrixCharacteristics getMatrixCharacteristics( String varname ) 
 		throws DMLRuntimeException
 	{
-		MatrixDimensionsMetaData dims = (MatrixDimensionsMetaData) getMetaData(varname);
-		return dims.getMatrixCharacteristics();
+		return getMetaData(varname).getMatrixCharacteristics();
 	}
 	
 	/**
@@ -280,14 +282,14 @@ public class ExecutionContext {
 			return;
 		
 		MetaData oldMetaData = mo.getMetaData();
-		if( oldMetaData == null || !(oldMetaData instanceof MatrixFormatMetaData) )
+		if( oldMetaData == null || !(oldMetaData instanceof MetaDataFormat) )
 			throw new DMLRuntimeException("Metadata not available");
 			
 		MatrixCharacteristics mc = new MatrixCharacteristics((long)nrows, (long)ncols, 
 				(int) mo.getNumRowsPerBlock(), (int)mo.getNumColumnsPerBlock());
-		mo.setMetaData(new MatrixFormatMetaData(mc, 
-				((MatrixFormatMetaData)oldMetaData).getOutputInfo(),
-				((MatrixFormatMetaData)oldMetaData).getInputInfo()));
+		mo.setMetaData(new MetaDataFormat(mc, 
+				((MetaDataFormat)oldMetaData).getOutputInfo(),
+				((MetaDataFormat)oldMetaData).getInputInfo()));
 	}
 	
 	/**
@@ -530,30 +532,25 @@ public class ExecutionContext {
 	 * The function returns the OLD "clean up" state of matrix objects.
 	 * 
 	 * @param varList variable list
-	 * @return map of old cleanup state of matrix objects
+	 * @return indicator vector of old cleanup state of matrix objects
 	 */
-	public HashMap<String,Boolean> pinVariables(ArrayList<String> varList) 
+	public boolean[] pinVariables(ArrayList<String> varList) 
 	{
 		//2-pass approach since multiple vars might refer to same matrix object
-		HashMap<String, Boolean> varsState = new HashMap<>();
+		boolean[] varsState = new boolean[varList.size()];
 		
 		//step 1) get current information
-		for( String var : varList )
-		{
-			Data dat = _variables.get(var);
-			if( dat instanceof MatrixObject ) {
-				MatrixObject mo = (MatrixObject)dat;
-				varsState.put( var, mo.isCleanupEnabled() );
-			}
+		for( int i=0; i<varList.size(); i++ ) {
+			Data dat = _variables.get(varList.get(i));
+			if( dat instanceof MatrixObject )
+				varsState[i] = ((MatrixObject)dat).isCleanupEnabled();
 		}
 		
 		//step 2) pin variables
-		for( String var : varList ) {
-			Data dat = _variables.get(var);
-			if( dat instanceof MatrixObject ) {
-				MatrixObject mo = (MatrixObject)dat;
-				mo.enableCleanup(false); 
-			}
+		for( int i=0; i<varList.size(); i++ ) {
+			Data dat = _variables.get(varList.get(i));
+			if( dat instanceof MatrixObject )
+				((MatrixObject)dat).enableCleanup(false); 
 		}
 		
 		return varsState;
@@ -575,11 +572,11 @@ public class ExecutionContext {
 	 * @param varList variable list
 	 * @param varsState variable state
 	 */
-	public void unpinVariables(ArrayList<String> varList, HashMap<String,Boolean> varsState) {
-		for( String var : varList) {
-			Data dat = _variables.get(var);
+	public void unpinVariables(ArrayList<String> varList, boolean[] varsState) {
+		for( int i=0; i<varList.size(); i++ ) {
+			Data dat = _variables.get(varList.get(i));
 			if( dat instanceof MatrixObject )
-				((MatrixObject)dat).enableCleanup(varsState.get(var));
+				((MatrixObject)dat).enableCleanup(varsState[i]);
 		}
 	}
 	
@@ -611,28 +608,22 @@ public class ExecutionContext {
 	public void cleanupMatrixObject(MatrixObject mo)
 		throws DMLRuntimeException 
 	{
-		try
-		{
-			if ( mo.isCleanupEnabled() ) 
-			{
-				//compute ref count only if matrix cleanup actually necessary
-				if ( !getVariables().hasReferences(mo) ) {
-					//clean cached data	
-					mo.clearData(); 
-					if( mo.isHDFSFileExists() )
-					{
-						//clean hdfs data
-						String fpath = mo.getFileName();
-						if (fpath != null) {
-							MapReduceTool.deleteFileIfExistOnHDFS(fpath);
-							MapReduceTool.deleteFileIfExistOnHDFS(fpath + ".mtd");
-						}
-					}
+		//early abort w/o scan of symbol table if no cleanup required
+		boolean fileExists = (mo.isHDFSFileExists() && mo.getFileName() != null);
+		if( !CacheableData.isCachingActive() && !fileExists )
+			return;
+		
+		try {
+			//compute ref count only if matrix cleanup actually necessary
+			if ( mo.isCleanupEnabled() && !getVariables().hasReferences(mo) )  {
+				mo.clearData(); //clean cached data
+				if( fileExists ) {
+					MapReduceTool.deleteFileIfExistOnHDFS(mo.getFileName());
+					MapReduceTool.deleteFileIfExistOnHDFS(mo.getFileName()+".mtd");
 				}
 			}
 		}
-		catch(Exception ex)
-		{
+		catch(Exception ex) {
 			throw new DMLRuntimeException(ex);
 		}
 	}
