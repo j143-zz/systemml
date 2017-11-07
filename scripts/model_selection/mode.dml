@@ -70,3 +70,5 @@ mode = function (matrix[double] K, matrix[double] y, matrix[double]lh)
   
   lmlh = - 0.5 * t(postf) %*% K^-1 %*% postf + llh - 0.5 * log( abs(B) );
   */
+}
+
