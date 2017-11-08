@@ -29,7 +29,7 @@ mode = function (matrix[double] K, matrix[double] y, matrix[double]lh)
   K = rand(rows=3, cols=3, min=0.000000001, max=1);
   y = rand(rows=3, cols=1); 
   
-  I = diag(nrow(K));
+  I = diag(matrix(0, rows=nrow(K), cols=1));
   
   # 2. initialized f = 0
   f = matrix(0, rows=3, cols=3);
