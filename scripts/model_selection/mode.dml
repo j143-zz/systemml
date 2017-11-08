@@ -24,7 +24,7 @@
 # ------------------------------------------
 
 mode = function (matrix[double] K, matrix[double] y, matrix[double]lh) 
-  return (matrix[double] f, matrix[double] lml) {
+  return (matrix[double] f, matrix[double] lmlh) {
   
   K = rand(rows=3, cols=3, min=0.000000001, max=1);
   y = rand(rows=3, cols=1); 
