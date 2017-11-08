@@ -68,6 +68,9 @@ mode = function (matrix[double] K, matrix[double] y, matrix[double]lh)
   # 9. until convergence.
   }
   
+  # initialize llh (log likelihood)
+  llh = matrix(0, rows=1, cols=1);
+  
   # 10. log q(y|K,θ) = - 0.5 t(a) f + log p(y|f) - Σ diag(L)
   lmlh = - 0.5 * t(a) %*% f + llh - sum( diag(L) );
   
