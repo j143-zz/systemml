@@ -91,7 +91,7 @@ print("")
 print("")
 print("Starting other tests.")
 print("---")
-/*
+
 test::batch_norm1d()
 test::batch_norm2d()
 test::conv2d()
@@ -112,7 +112,7 @@ test::top_k2d()
 test::softmax2d()
 test::compare_tanh_builtin_forward_with_old()
 test::compare_tanh_builtin_backward_with_old()
-*/
+
 
 print("---")
 print("Other tests complete -- look for any ERRORs or WARNINGs.")
