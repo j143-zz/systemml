@@ -1,0 +1,66 @@
+#-------------------------------------------------------------
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+#-------------------------------------------------------------
+
+
+# 1. Implements Ackley Function 
+# ------------------------------------------------------------
+# Reference: https://www.sfu.ca/~ssurjano/ackley.html
+#
+# Description: The Ackley function is widely used for testing optimization algorithms. In its 
+# two-dimensional form, it is characterized by a nearly flat outer region, and a large hole at
+# the centre. The function poses a risk for optimization algorithms, particularly hillclimbing 
+# algorithms, to be trapped in one of its many local minima.
+#
+# Input Domain:
+# The function is usually evaluated on the hypercube xi ∈ [-32.768, 32.768], for all i = 1, 2,..., d,
+# although, it may also be restricted to a smaller domain.
+#
+# Global Minimum:
+# f(X') = 0, at X' = (0, ..., 0)
+#
+# -------------------------------------------------------------
+# 
+
+Ackley = function (matrix [double] X, double a, double b, double c) 
+  returns (double y) {
+  
+  /*
+   * INPUTS:
+   * X -> Input matrix of size 1 x d (1 by d-dimensions)
+   * a -> constant, default value is 20.0 
+   * b -> constant, default value is 0.2
+   * c -> constant, default value is 2 * pi
+   *
+   * OUTPUTS:
+   * y -> output scalar value
+   */
+   
+   d = length(X);
+   
+   sum1 = sum(X ^ 2);
+   sum2 = sum(cos(c * X));
+   
+   term1 = -a * exp(-b * sqrt(sum1 / d));
+   term2 = -exp(sum2/d);
+   
+   y = term1 + term2 + a + exp(1);
+   
+}
