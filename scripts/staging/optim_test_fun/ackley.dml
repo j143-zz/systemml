@@ -40,7 +40,7 @@
 # 
 
 Ackley = function (matrix [double] X, double a, double b, double c) 
-  returns (double y) {
+  return (double y) {
   
   /*
    * INPUTS:
@@ -58,8 +58,8 @@ Ackley = function (matrix [double] X, double a, double b, double c)
    sum1 = sum(X ^ 2);
    sum2 = sum(cos(c * X));
    
-   term1 = -a * exp(-b * sqrt(sum1 / d));
-   term2 = -exp(sum2/d);
+   term1 = -a * exp(-b * sqrt(sum1 / d) );
+   term2 = -exp(sum2 / d);
    
    y = term1 + term2 + a + exp(1);
    
