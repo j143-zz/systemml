@@ -1056,7 +1056,6 @@ fm = function() {
   
   print(" - Grad checking w0.")
   for (i in 1:nrow(w0)) {
-  print(" inside w0 loop ");
     for (j in 1:ncol(w0)) {
       # Compute numerical derivative
       old = as.scalar(w0[i,j])
