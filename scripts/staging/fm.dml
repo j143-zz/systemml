@@ -78,7 +78,7 @@ backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, ma
     g_V1 = t(X) %*% (X %*% V); # shape (d, k)
     
     ## gradient of loss function w.r.t. V
-    dV = (as.scalar(colSums(dout))/n) * g_V1 - t(X^2) %*% dout %*% colSums(V); # shape (d, k)
+    dV = (as.scalar(colSums(dout)/ncols(X)) * g_V1 - t(X^2) %*% dout %*% colSums(V); # shape (d, k)
         
 }
 
