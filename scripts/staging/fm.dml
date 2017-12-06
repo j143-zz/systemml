@@ -58,7 +58,7 @@ backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, ma
     * Outputs:
     *  - dX : the gradient of loss function w.r.t  X, of shape (n, d).
     *  - dw0: the gradient of loss function w.r.t w0, of shape (1,).
-    *  - dW : the gradient of loss function w.r.t  W, of shape (d, 1). <- make sure about this dim!
+    *  - dW : the gradient of loss function w.r.t  W, of shape (d, 1).
     *  - dV : the gradient of loss function w.r.t  V, of shape (d, k).
     */
     
@@ -66,7 +66,7 @@ backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, ma
     g_w0 = as.matrix(1);  # shape (1, 1)
     
     ## gradient of loss function w.r.t. w0
-    dw0  = dout %*% g_w0 ;  # shape (n, 1)
+    dw0  = rowSums(dout) %*% g_w0 ;  # shape (1, 1)
     
     # 2. gradient target vector w.r.t. W
     g_W = X ; # shape (n, d) 
@@ -91,7 +91,7 @@ init = function(int n, int d, int k)
     *  - V : factorized interaction terms, of shape (d, k). 
     */
     
-    w0 = matrix(0, rows=n, cols=1)
+    w0 = matrix(0, rows=1, cols=1)
     W  = matrix(0, rows=d, cols=1)
     V  = rand(rows=d, cols=k, min=0.0, max=1.0, pdf="uniform", sparsity=0.2)
 }
