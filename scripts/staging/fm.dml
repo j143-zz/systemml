@@ -45,7 +45,8 @@ forward = function(matrix[double] X, matrix[double] w0, matrix[double] W, matrix
 }
    
 backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, matrix[double] W, matrix[double] V)
-    return (/*matrix[double] dX,*/ matrix[double] dw0, matrix[double] dW/*, matrix[double] dV*/) {
+    return (matrix[double] dw0, matrix[double] dW) {
+ 
    /*
     * This function accepts the upstream gradients w.r.t output target vector, and 
     * returns the gradients of the loss w.r.t the parameters
@@ -61,16 +62,7 @@ backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, ma
     *  - dV : the gradient of loss function w.r.t  V, of shape (d, k).
     */
     
-    # precompute (X %*% V)
-    # XV   = X %*% V ; # of shape (n,d) x (d, k) = (n, k)
-    
-    # 1. gradient of y (model) w.r.t. X (input)
-    #g_X   = ( W + rowsums( (X %*% V) %*% V - (X %*% V^2) ) ); # needs to be modified, should the notation be dy 
-    
-    # gradient of loss function w.r.t. X
-    # dX = dout %*% g_X ; # of shape (n, d)
- 
-    # 2. gradient of target vector w.r.t. w0
+    # 1. gradient of target vector w.r.t. w0
     g_w0 = as.matrix(1);  # shape (1, 1)
     
     ## gradient of loss function w.r.t. w0
@@ -81,13 +73,7 @@ backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, ma
     
     ## gradient of loss function w.r.t. W
     dW  =  t(g_W) %*% dout; # shape (d, 1)
-    
-    # 4. gradient of target vector w.r.t. V
-    # g_V = t(X) %*% (X %*% V) # - (X^2 %*% V) ; # shape (d, k) - (n, k) :\ not correct!
-    
-    ## gradient of loss function w.r.t. V
-    # dV  = g_V %*% t(dout) ;  # shape has to be (d, k)
-    
+        
 }
 
 init = function(int n, int d, int k)
@@ -107,7 +93,6 @@ init = function(int n, int d, int k)
     
     w0 = matrix(0, rows=1, cols=1)
     W  = matrix(0, rows=d, cols=1)
-    # W = rand(rows=d, cols=1, min=0, max=1)
     V  = rand(rows=d, cols=k, min=0.0, max=1.0, pdf="uniform", sparsity=0.2)
 }
 
