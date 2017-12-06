@@ -63,10 +63,11 @@ backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, ma
     */
     
     # 0. gradient of target vector w.r.t. X
-    # g_X = W + rowSums( (X %*% V) %*% V ) - rowSums( X %*% V^2 ) ; 
+    # g_X = W + rowSums( (X %*% V) %*% t(V) ) - rowSums( X %*% V^2 ) ; 
     
     ## gradient of loss function w.r.t. X
-    dX = dout %*% t( W - rowSums( X %*% V^2 ) ); # shape (n, d)
+    # dX = dout %*% t( W - rowSums( X %*% V^2 ) ); # shape (n, d)
+    dX = dout %*% t(W) + as.scalar( colSums(dout) ) * ( (X %*% V) %*% t(V) );
     
     # 1. gradient of target vector w.r.t. w0
     g_w0 = as.matrix(1);  # shape (1, 1)
