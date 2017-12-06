@@ -66,7 +66,7 @@ backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, ma
     g_w0 = as.matrix(1);  # shape (1, 1)
     
     ## gradient of loss function w.r.t. w0
-    dw0  = rowSums(dout) %*% g_w0 ;  # shape (1, 1)
+    dw0  = colSums(dout) ;  # shape (1, 1)
     
     # 2. gradient target vector w.r.t. W
     g_W = X ; # shape (n, d) 
