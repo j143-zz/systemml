@@ -41,7 +41,7 @@ forward = function(matrix[double] X, matrix[double] w0, matrix[double] W, matrix
    *  - out : target vector, of shape (n, 1)
    */
    
-   out = w0 + X %*% W + 0.5 * rowSums( (X %*% V)^2 - (X^2 %*% V^2) ); # target vector, shape (n, 1)
+   out = X %*% W + 0.5 * rowSums( (X %*% V)^2 - (X^2 %*% V^2) ) + w0; # target vector, shape (n, 1)
 }
    
 backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, matrix[double] W, matrix[double] V)
