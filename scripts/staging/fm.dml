@@ -45,7 +45,7 @@ forward = function(matrix[double] X, matrix[double] w0, matrix[double] W, matrix
 }
    
 backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, matrix[double] W, matrix[double] V)
-    return (matrix[double] dw0, matrix[double] dW) {
+    return (matrix[double] dw0, matrix[double] dW, matrix[double] dV) {
  
    /*
     * This function accepts the upstream gradients w.r.t output target vector, and 
@@ -73,6 +73,12 @@ backward = function(matrix[double] dout, matrix[double] X, matrix[double] w0, ma
     
     ## gradient of loss function w.r.t. W
     dW  =  t(g_W) %*% dout; # shape (d, 1)
+    
+    # 3. gradient of target vector w.r.t. V
+    g_V = t(X) %*% (X %*% V); # shape (d, k)
+    
+    ## gradient of loss function w.r.t. V
+    dV = as.scalar(colSums(dout)) %*% g_V; # shape (d, k)
         
 }
 
