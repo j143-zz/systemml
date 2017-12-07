@@ -1039,7 +1039,7 @@ fm = function() {
   print("Grad checking the factorization machines with L2 loss.")
 
   # Generate data
-  n = 10 # num examples
+  n = 30 # num examples
   d = 100 # num features
   k = 2 # factorization dimensionality
   X = rand(rows=n, cols=d)
