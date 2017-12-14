@@ -24,12 +24,12 @@
 # ------------------------------------------
 
 mode = function (matrix[double] K, matrix[double] y, matrix[double]lh) 
-  return (matrix[double] f, matrix[double] lmlh) {
+  return (matrix[double] f, matrix[double] lmlh, matrix[double] a) {
   
-  K = rand(rows=3, cols=3, min=0.000000001, max=1);
-  y = rand(rows=3, cols=1); 
+ # K = rand(rows=3, cols=3, min=0.000000001, max=1);
+ # y = rand(rows=3, cols=1);
   
-  I = diag(matrix(0, rows=nrow(K), cols=1));
+  I = diag(matrix(1, rows=nrow(K), cols=1));
   
   # 2. initialized f = 0
   f = matrix(0, rows=3, cols=3);
@@ -69,7 +69,7 @@ mode = function (matrix[double] K, matrix[double] y, matrix[double]lh)
   }
   
   # initialize llh (log likelihood)
-  llh = matrix(0, rows=1, cols=1);
+  llh = log(lh);
   
   # 10. log q(y|K,θ) = - 0.5 t(a) f + log p(y|f) - Σ diag(L)
   lmlh = - 0.5 * t(a) %*% f + llh - sum( diag(L) );
