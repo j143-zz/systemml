@@ -25,10 +25,40 @@
  */
 
 covConstant = function()
-  return(matrix[double] out) {
+  return(/*matrix[double] out*/) {
 
   # constant covariance function, which is only stationary
   s0 = 0.2;
   out = as.matrix(s0^2);
 
+ for(i in 1:ncol(out)) {
+   for(j in 1:nrow(out)) {
+     print( i + j + " " + as.scalar(out[i,j]));
+   }
+ }
+
 }
+
+covI = function(/* matrix[double] X, matrix[double] theta */)
+  return(/*matrix[double] K, matrix[double] dK*/) {
+
+  K = diag( matrix(1, rows=4, cols=1) );
+
+  out = K;
+
+  for(i in 1:ncol(K)){
+    for(j in 1:nrow(K)){
+      obj = as.scalar(K[j, i])
+      if(obj != -1)
+        print( i + "," + j + obj)
+    }
+  }
+
+
+  dK = diag( matrix(0, rows=4, cols=1) );
+
+}
+
+
+tmpx = covI()
+tmpy = covConstant()

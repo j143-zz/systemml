@@ -37,7 +37,8 @@ K = rand(rows=3, cols=3, min=0.000000001, max=1);
 
 # likelihood, mean & covariance are the structure of theta(i.e, of hyperparameters)
 
-gpc = function (matrix[double] X, matrix[double] y, matrix[double] theta, matrix[double] lh)
+gpc = function (matrix[double] X, matrix[double] y, matrix[double] theta,
+      matrix[double] lh)
   return (matrix[double] Z, matrix[double] dZ) {
 
   /*
@@ -56,7 +57,7 @@ gpc = function (matrix[double] X, matrix[double] y, matrix[double] theta, matrix
 # ------
 
   # 2. compute K
-  K = rand(rows=10, cols=10, min=0.000000001, max=1);
+  K = rand(rows=3, cols=3, min=0.000000001, max=1);
 
   # 3. f = mode( K, y, p(y|f) )
   [f, lmlh, a] = mode::mode(K, y, lh);
