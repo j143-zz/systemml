@@ -1,0 +1,92 @@
+#-------------------------------------------------------------
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+#-------------------------------------------------------------
+
+convex_quartic = function(matrix[double] X)
+  return (matrix[double] f/*, matrix[double] df*/) {
+
+  sigma = 1 # can be > 1 & will change the rate of convergence
+
+  A = matrix("  5   1    0 0.5
+                1   4  0.5   0
+                0 0.5    3   0
+              0.5   0    0   2", rows=4, cols=4)
+
+  f = 0.5 * t(X) %*% X + 0.25 * sigma * ( t(X) %*% A %*% X )^2
+
+  # df = X + 0.5 * sigma * ( t(X) %*% A %*% X ) %*% (A %*% X)
+
+}
+
+# X = matrix("0.342020 0.9396926 0.342020 0.9396926", rows=4, cols=1)
+X = matrix("0 0 0 0", rows=4, cols=1)
+quadratic = function(matrix[double] X)
+  return (matrix[double] f, matrix[double] df, matrix[double] d2f) {
+
+  Q = matrix("  5   1    0 0.5
+                1   4  0.5   0
+                0 0.5    3   0
+              0.5   0    0   2", rows=4, cols=4)
+
+  b = matrix("3.1196389
+              4.2718004
+              1.4959063
+              2.0503952", rows=4, cols=1);
+
+  f = 0.5 * t(X) %*% Q %*% X - t(b) %*% X
+
+  df = Q %*% X - b
+
+  d2f = Q
+}
+
+# 3.1 Backtracking Line Search
+
+# alphaM = is chosen to be 1 in Newton and quasi-Newton Methods,
+# but can have different values in other algorithms such as steepest
+# descent or conjugate gradient.
+alphaM = 0.2; # (choose > 0)
+ro     = 0.6; # (belongs to (0,1))
+c      = 0.5; # (belongs to (0,1))
+
+# set alpha = alphaM
+alpha = alphaM
+
+# repeat...
+cond = TRUE;
+i = 1
+while(cond == TRUE) { # Ensure that there is a sufficient decrease in objective function
+  alpha = ro * alpha
+
+  [f, df, d2f] = quadratic(X)
+
+  p = - (d2f)^-1 %*% df
+  B = f + c * alpha * t( df ) %*% p
+
+  [f1,df1,d2f1] = quadratic(X + alpha * p)
+  A = f1
+  cond = (sum(B - A) > 0)
+  i = i+1
+}
+
+# Terminate with alphaK = alpha
+alphaK = alpha
+
+print(as.scalar(alpha*p[1,1]))
