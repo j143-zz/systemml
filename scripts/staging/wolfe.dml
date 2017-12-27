@@ -1,0 +1,161 @@
+#-------------------------------------------------------------
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+#-------------------------------------------------------------
+
+
+# 1. Bracketing Phase
+# This finds an interval [a,b] containing acceptable step lengths.
+
+
+# 3.1 Backtracking Line Search
+
+# alphaM = is chosen to be 1 in Newton and quasi-Newton Methods,
+# but can have different values in other algorithms such as steepest
+# descent or conjugate gradient.
+alphaM = 0.2; # (choose > 0)
+ro     = 0.6; # (belongs to (0,1))
+c      = 0.5; # (belongs to (0,1))
+
+# set alpha = alphaM
+alpha = alphaM
+
+x = as.matrix(10)
+p = 1
+# repeat...
+cond = TRUE;
+
+while(cond == TRUE) { # Ensure that there is a sufficient decrease in objective function
+  alpha = ro * alpha;
+
+  A = f(x + alpha * p)
+  B = sin(x) + c + alpha * t( df(x) ) * p
+
+  cond = (sum(A - B) > 0)
+}
+
+# Terminate with alphaK = alpha
+alphaK = alpha
+
+
+# Convergence rate of steepest Descent
+f = function(matrix[double] x)
+  return (matrix[double] out) {
+
+  out = 0.5 * t(x) %*% Q %*% x - t(b) %*% x
+}
+
+df = function(matrix[double] x)
+  return (matrix[double] out) {
+
+  out = Q %*% x - b
+}
+
+d2f = function(matrix[double] x)
+  return (matrix[double] out) {
+
+  out = Q
+}
+
+alphaK = ( t( df(x) ) %*% df(x) ) / ( t(df(x)) %*% Q %*% df(x) )
+
+xk1 = xk - alphaK %*% df(x)
+
+# eq 3.27
+# 0.5 * ( t(x-x0) %*% Q %*% (x-x0) )
+# f(x) - f(x0)
+
+# eq 3.28
+# 0.5 * ( t(xk1-x0) %*% Q %*% (xk1-x0) ) = (1-tmp) %*% 0.5 * ( t(x-x0) %*% Q %*% (x-x0) )
+#
+# tmp = ( t( df(x) ) %*% df(x) ) / ( (t(df(x)) %*% Q %*% df(x)) %*% (t(df(x)) %*% Q^-1 %*% df(x))
+#
+#
+
+# Quasi-Newton Methods
+# pk = - Bk %*% df(xk)
+
+
+# Newton Methods
+# pkN = - ( d2f(xk) )^-1 %*% df(xk)
+
+# ---------------------------------
+# STEP-LENGTH SELECTION ALGORITHMS
+# ---------------------------------
+
+# eq. 3.38
+# g = f(x + alpha * pk)
+
+# f = 0.5 * t(x) %*% Q %*% x + t(b) %*% x + c
+# xk + alpha * pk
+
+# 1. Bracketing Phase
+# 2. Selection Phase
+
+# --------------
+# INTERPOLATION
+# --------------
+
+# eq. 3.40
+# c1 = 0.0001
+# g(alphaK) <= g(0) + c1 * alphaK * dg(0)
+
+# eq. 3.41
+# gq(alpha) = dg(0) * alpha + g(0) + ( g(alpha0) - g(0) - alpha0 * dg(0) ) / alpha^2
+
+# ------------------------------------------------
+# A LINE SEARCH ALGORITHM FOR THE WOLFE CONDITIONS
+# ------------------------------------------------
+
+# Algorithm 3.2
+
+alpha0 = 0
+alpha1 = 1; # (>0)
+alphaMax = 1;
+
+i = 1;
+
+while (i < 10) {
+  tmp = g(alpha(i))
+
+  if( g(alpha(i)) > g(0) + c1*alpha(i)*dg(0) ) {
+    alphaStar = zoom(alpha(i-1), alpha(i))
+    stop
+  }
+
+  tmp1 = dg(alpha(i))
+  if( abs(dg(alpha(i))) <= -c2*dg(0)) {
+    alphaStar = alpha(i)
+    stop
+  }
+
+  if( dg(alpha(i)) >= 0) {
+    alphaStar = zoom(alpha(i), alpha(i-1))
+    stop
+  }
+
+  # choose alpha(i+1) from ( alpha(i), alphaMax )
+  # performs extrapolation to find the next trial value alpha(i+1)
+
+  i = i + 1
+}
+
+
+
+
