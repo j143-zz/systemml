@@ -7,9 +7,9 @@
 # to you under the Apache License, Version 2.0 (the
 # "License"); you may not use this file except in compliance
 # with the License.  You may obtain a copy of the License at
-# 
+#
 #   http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing,
 # software distributed under the License is distributed on an
 # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -40,8 +40,8 @@
 # ----------------------------------------------------------------------------
 #
 # Example:
-# hadoop jar SystemML.jar -f Kmeans.dml -nvargs X=X.mtx k=5 C=centroids.mtx
-# hadoop jar SystemML.jar -f Kmeans.dml -nvargs X=X.mtx k=5 runs=100 maxi=5000 tol=0.00000001 samp=20 C=centroids.mtx isY=TRUE Y=clusters.mtx verb=TRUE
+# hadoop jar SystemDS.jar -f Kmeans.dml -nvargs X=X.mtx k=5 C=centroids.mtx
+# hadoop jar SystemDS.jar -f Kmeans.dml -nvargs X=X.mtx k=5 runs=100 maxi=5000 tol=0.00000001 samp=20 C=centroids.mtx isY=TRUE Y=clusters.mtx verb=TRUE
 
 fileX = $X;
 fileY = ifdef ($Y, "Y.mtx");
