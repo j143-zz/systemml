@@ -60,6 +60,7 @@ grad_check::max_pool2d_simple()
 grad_check::avg_pool2d_builtin()
 grad_check::upsample2d()
 grad_check::relu()
+grad_check::leaky_relu()
 grad_check::rnn()
 grad_check::scale_shift1d()
 grad_check::scale_shift2d()
@@ -67,8 +68,6 @@ grad_check::sigmoid()
 grad_check::softmax()
 grad_check::softmax2d()
 grad_check::tanh()
-# TODO: Enable after adding a builtin function. The layer was tested by comparing its results with TensorFlow.
-# grad_check::zero_pad2d()
 print("")
 
 # Example model
